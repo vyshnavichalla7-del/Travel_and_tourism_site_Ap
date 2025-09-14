@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Travel Destination Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .category-btn {
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .category-btn.selected {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        a.more-info {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: underline;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        a.more-info:hover {
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <header class="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-8">
+        <div class="container mx-auto text-center px-4">
+            <h1 class="text-4xl font-bold mb-2">Explore Travel Destinations</h1>
+            <p class="text-lg max-w-3xl mx-auto">
+                Discover amazing temples, tourist spots, beaches, caves, forts, and waterfalls
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <div>
+                <h2 class="text-2xl font-semibold mb-4">Choose Your Interests</h2>
+                <div class="flex flex-wrap gap-2">
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="all">All</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="temples">Temples</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="tourist-places">Tourist Places</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="forts">Forts</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="waterfalls">Waterfalls</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="beaches">Beaches</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="caves">Caves</button>
+                </div>
+            </div>
+            <div class="w-full md:w-64">
+                <input type="text" id="search-input" placeholder="Search destinations..." class="search-input w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500" />
+            </div>
+        </section>
+
+        <section class="destinations">
+            <div id="destinations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Travel Destination Explorer. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const destinations = [
+            // Temples
+            {
+                category: "Temples",
+                name: "Sri Kodandarama Swamy Temple",
+                description: "The Sri Kodandarama Swamy Temple in Buchireddypalem, located in the SPSR Nellore District of Andhra Pradesh, is a revered Hindu temple dedicated to Lord Rama. The temple's history dates back to 1784, when it was constructed under the guidance of Dodla Rami Reddy, also known as 'Bangaru Rami Reddy.",
+                img: "https://content3.jdmagicbox.com/comp/kadapa/j1/9999p8562.8562.180920190348.z6j1/catalogue/sri-kodanda-rama-swamy-temple-vontimitta-kadapa-6s8m00xhvl.jpg",
+                imgAlt: "Golden temple structure with intricate carvings and tall gopuram against blue sky",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-1.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Gandi Veera Anjaneya Swamy Temple",
+                description: "Lord Rama visited this place in his return journey from Lanka. To welcome Rama Vayu the father of Anjaneya hung a wreath of golden flowers across the ravine. Before leaving this place Rama carved the figure of Anjaneya on a rock",
+                img: "https://content.jdmagicbox.com/comp/kadapa/j3/9999p8562.8562.181113142143.c3j3/catalogue/gandi-sri-anjaneya-temple-kadapa-9wghouu88b.jpg",
+                imgAlt: "Colorful Hindu temple with detailed sculptures and decorative elements",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-2.html"
+            },
+            {
+                category: "Temples",
+                name: "Brahmamgari Matham",
+                description: "Brahmamgari Matham is a sacred pilgrimage center located in Kandimallayapalli village, near the city of Kadapa in Andhra Pradesh, India, dedicated to Sri Potuluri Veera Brahmendra Swamy, the famous 17th-century saint and predictor. It is the site where he entered Jeeva Samadhi (alive samadhi) in 1693, and its walls are covered with his predictions known as Kala Gnyanam.",
+                img: "https://content.jdmagicbox.com/comp/kadapa/p2/9999p8562.8562.170315151909.e4p2/catalogue/brahmamgari-matham-temple-cuddapah-ho-kadapa-temples-x0oxvp9.jpg",
+                imgAlt: "Golden temple structure with intricate carvings and tall gopuram against blue sky",
+                moreInfo: "/home/pravalika/Desktop/kadapa/K-3.html"
+            },
+            {
+                category: "Temples",
+                name: "Sidappa Matham Temple",
+                description: "Siddappa Matam refers to the Jeeva Samadhi of Dudekula Siddaiah, a prominent Muslim disciple of Sri Potuluri Veerabrahmam. Located in Mudumala, Andhra Pradesh, the matham serves as a tomb and a center of worship dedicated to Siddaiah, who was known for challenging social inequalities and caste divisions through his teachings and writings. The matham is an important pilgrimage site, especially for those who admire the philosophy of Veerabrahmam and his disciples, with the walls likely featuring teachings and predictions from the lineage.",
+                img: "https://upload.wikimedia.org/wikipedia/en/8/83/Siddayyagari_jeeva_samadhi.jpg",
+                imgAlt: "Colorful Hindu temple with detailed sculptures and decorative elements",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-4.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Lakshmi Venkateswara Swamy Temple",
+                description: "Devuni Kadapa Temple was constructed centuries ago, possibly during the Vijayanagara Empire. Mentioned in the Puranas as Kripavathi Kshetram, it is an example of Vijayanagara architecture. This temple marks the spiritual beginning of a devotee's journey to Tirumala, symbolizing the initiation of their relationship with Lord Venkateswara.",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9MWjv3mqrA6MSBhFMOR9kawRC6Am6JRZI7g&s",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-5.html"
+            },
+            {
+                category: "Temples",
+                name: "Sr Lakshmi Narasimha Swamy Temple",
+                description: "This temple is one of Nava Narasimha temples in Andhra Pradesh. Here Lord vishnu is worshipped as Lord Narasimha. This temple is built in the Vijayanagara period and we can see beautiful pillared halls and excellent carvings of hindu gods on all pillars. Here we can see Lord Narasimha with eight hands.",
+                img: "https://www.trawell.in/admin/images/upload/712214553Anantapur_Kadiri_Lakshmi_Narasimha_Temple_Main.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-6.html"
+            },
+            {
+                category: "Temples",
+                name:"Sri Veerabhadra Swamy Temple",
+                description: "The Veerabhadra temple itself is 1000-years old. It is said that the great King Krishnadevaraya used to camp at Rayachoti whenever he visited Srivari temple at Tirupati. In old Rayachoti near the river to the west of the town is a stone very conspicuously set up, with a Tamil inscription dated S.S.",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9w9qCV8TOs7mM16hgbDLWB-EY9fBZd1HDWA&s",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-7.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Kamakshi Vaidyanatha Temple",
+                description: "The megalith Garuda placed on the pond, started floating like a flower - Pushpa in Sanskrit. To stop it from raising again, God Vishnu and God Shiva drove the rock under with their feet into the land. Thus the name Pushpagiri which in Sanskrit would mean a flowery mound..",
+                img: "https://i.ytimg.com/vi/WBRKlJ8n4Rc/maxresdefault.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-8.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Sri Sri Prasanna Visveshwara Temple",
+                description: "It is one of most sacred temples in the kadapa The god here is very powerful , shiva who fulfill all ur wishes. Hanuman , shakara charya , parvathi , vinayaka , subramanyam god idol also established here. Great temple located in the center of the city. An ancient temple of more over 470years back. Lord Ganesha is installed on the left side of Shivalinga and Mother Annapurna is installed on the right side. The Shivalinga situated in the temple is black in colour.",
+                img: "https://content.jdmagicbox.com/v2/comp/kadapa/b5/9999p8562.8562.221203030855.c3b5/catalogue/moksha-narayana-swamy-temple-kamalapuram-kadapa-temples-Ne9R5D3bWk.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-9.html"
+            },
+            {
+                category: "Temples",
+                name: " Sri Vijaya Durga Devi Temple",
+                description: "In Sri Vijaya Durga Devi Temple, Kadapa on 6th day performed 54 Kalasa Abhishekam in the morning. In the evening with 11 varieties of fruits 🍇 performed Phala Archana for the goddess inside temple. In Veda mantapam Goddess gave darshan as Kaatyayani. As usual cultural programs and Chariot Seva made the evening pleasant.",
+                img: "https://content.jdmagicbox.com/comp/kadapa/p8/9999p8562.8562.191120200332.y1p8/catalogue/sri-vijaya-durga-devi-temple-kadapa-temples-2mldaq6ga8-250.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-10.html"
+            },
+            {
+                category: "Temples",
+                name: "Padmanabha Swamy Temple",
+                description: "The Sri Anantha Padmanabha Swamy Temple in Kadapa is an old and historic temple located in Patha Kadapa, near Devuni Kadapa, noted for its unique Swayambhu (self-manifested) Padmanabha Swamy idol that cannot be lifted from the ground. While another famous Anantha Padmanabha Swamy temple is in Kerala, the Kadapa temple is a significant site in the Rayalaseema region of Andhra Pradesh and is known for the Sudarshana Chakra associated with the deity.",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKTKdccmHrSR57vqX1hYhDUmvXDPuDZ7Ovcg&s",
+                imgAlt: "carnation",
+                moreInfo:  "/home/pravalika/Desktop/kadapa/k-11.html"
+            },
+            {
+                category: "Temples",
+                name: "Chennakesava Swamy Temple",
+                description: "The presiding deity is Chennakesava Swamy which is the God that Cholas patronised across the generations. There are more temples dedicated to Chennakesava across the length and breadth of the Cuddapah district and they bear a striking resemblance to the Chennakesava temple in Pushpagiri.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/b/b7/Pushpagiri_Temple_in_Kadapa_District.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-12.html"
+            },
+            {
+                category: "Temples",
+                name: "Trikuteswar Swamy Temple",
+                description: "The Trikuteshwara Temples complex is located in Pushpagiri village, Kadapa district, Andhra Pradesh, near the Pennar river. It is a complex of three major temples within a walled compound, including the Trikutesvara temple, the Kamakshi Vaidyanatha temple, and the Bhimesvara temple. The area is also known for the significant Advaita Vedanta monastery established by SankaracharyaThe Trikuteshwara Temples complex is located in Pushpagiri.",
+                img: "https://tripxl.com/blog/wp-content/uploads/2024/09/Trikuteshwara-Temple.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-13.html"
+            },
+            {
+                category: "Temples",
+                name: "Sangameswara Temple",
+                description: "The Sangameswara Temple near Kamalapuram in Andhra Pradesh is located in Veerapunayunipalle and is dedicated to Lord Sangameswara Swamy (Lord Shiva) at the confluence of the Papagni and Mogamooru rivers. The temple is renowned for its intricate sculptures, the legend of its installation by Sage Agastya, and its roots in the Vijayanagar period, with archaeological findings suggesting connections to the Sathavahana and Chola period.",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNbI2x2yHCH7aL9LQECCwwvILTRjQfOXvidA&s",
+                imgAlt: "Ancient stone temple ",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-14.html"
+            },
+            {
+                category: "Temples",
+                name:"Mandem Laksmi Narasimha  Temple",
+                description: "The Mandem Lakshmi temple refers to the Mandem Lakshmi Narasimha temple, located in Devagudipalli, which is in the Chinnamandem mandal of the Kadapa district in Andhra Pradesh. This temple is situated on the Rayachoti to Madanapalle route.",
+                img: "https://content.jdmagicbox.com/v2/comp/kadapa/u4/9999p8562.8562.220317203038.f3u4/catalogue/mandem-laxminarasimhaswami-devalam-chinnamandem-kadapa-temples-yqr1wMMMVH.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo:  "/home/pravalika/Desktop/kadapa/k-15.html"
+            },
+            {
+                category: "Temples",
+                name: "Choudeswari Temple",
+                description: "The legend of Sri Chowdeshwari Devi states she is an incarnation of Goddess Parvati, who was created by Lord Shiva to protect the Devanga community from demons. After appearing to Sage Devala, she took the form of a fierce goddess, killed the attacking demons by consuming their blood with her extensive tongue, and was thus named Chowdeshwari Devi..",
+                img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToqkTWb7idauoWDsIU4vSWxeTrspZOI2_gQA&s",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-16.html"
+            },
+            {
+                category: "Temples",
+                name: "Mukti Rameswara Swamy Temple",
+                description: "The Rameswaram Temple's main specialty is its spiritual significance as one of the twelve Jyotirlinga shrines of Lord Shiva and a key destination on the Char Dham Yatra, a pilgrimage that offers spiritual cleansing and grace. Architecturally, it is renowned for its exceptionally long corridors and the 22 holy teerthams (water tanks) believed to have purifying powers. The temple's connection to the epic Ramayana, with legends of Lord Rama worshipping Shiva here, also adds to its revered status..",
+                img: "https://i.pinimg.com/474x/0e/23/5c/0e235ca530d2329c078ca4f435dc205c.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo:  "/home/pravalika/Desktop/kadapa/k-17.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Soumyanatha Swamy Temple",
+                description:"The Sri Soumyanatha Swamy Temple in Nandalur generally opens around 6:30 AM and closes around 7:30 PM, with a closure between 1 PM and 4 PM for the afternoon break. However, there can be slight variations, with some sources mentioning slightly earlier or later opening and closing times, and it's a good practice to confirm the exact timings, especially for special events or festivals, by checking with the temple authorities directly. .",
+                img: "https://www.astroved.com/astropedia/assets/images/temples/nandalur-soumyanatha-swamy-temple.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo:  "/home/pravalika/Desktop/kadapa/k-18.html"
+            },
+            
+            
+            // Tourist Places
+            {
+                category: "tourist-places",
+                name: "YSR Ghat",
+                description: "Idupulapaya Estate in his Kadapa district was the place he loved the most. The lush green family estate spread over 100 acres is located 40 km from Pulivendula town.YSR, as he was popularly known, stayed at the estate during his every visit to Kadapa district and inquired about various plantations in the estate. The place was also close to his heart as his parents were interred there.",
+                img: "https://images.deccanchronicle.com/dc-Cover-0f18ngjhi94asfkrcanivkkkp0-20190901024819.Medi.jpeg",
+                imgAlt: "Scenic hill station with green mountains and misty valleys",
+                moreInfo:  "/home/pravalika/Desktop/kadapa/k-19.html"
+            },
+            {
+                category: "tourist-places",
+                name: "Nemalla Park",
+                //description: "Popular trekking destination with waterfalls and natural beauty.",
+                description: "Idupulapaya peacock sanctuary starved of funds | Idupulapaya ...Peacock Park is a peacock breeding and conservation center in Idupulapaya, Andhra Pradesh, established by the former Chief Minister of Andhra Pradesh, Y.S. Rajasekhar Reddy, to breed and release peacocks into the nearby forest. While historically a significant site with numerous birds, recent information suggests a declining population due to funding and staff shortages. Visitors can experience a peaceful environment with beautiful peacocks.",
+                img:"https://content.jdmagicbox.com/v2/comp/kadapa/w3/9999p8562.8562.250306094901.x5w3/catalogue/peacock-park-kadapa-parks-WncAXWcAkU-250.jpg",
+                imgAlt: "Green hills with trekking paths and natural scenery",
+                moreInfo:"/home/pravalika/Desktop/kadapa/k-20.html"
+            },
+            {
+                category: "tourist-places",
+                name: "Ameen Peer Dargah",
+                description: "The Ameen Peer Dargah is without a doubt the most important attraction in all of Kadapa. Different people visit this 300-year-old dargah, which attracts worshippers seeking peace. The holy men Peerullah Hussaini and Arifullah Hussaini II are buried here.",
+                img: "https://hblimg.mmtcdn.com/content/hubble/img/kadapatiowimages/mmt/activities/m_Ameen_Peer_Dargah_1_l_412_550.jpg",
+                imgAlt: "Green hills with trekking paths and natural scenery",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-21.html"
+            },
+            {
+                category: "tourist-places",
+                name: "Shilparamam",
+                description: "Pulivendula Shilparamam is a cultural complex and park featuring green spaces and a children's play zone, located in Islampuram, Pulivendula, Andhra Pradesh. While the exact nature of its attractions varies, it's a tourist spot known for its natural rock formations and gardens. It's a well-maintained, peaceful park suitable for relaxation and admiration",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoz755nbKH-MfWHdal_z1ctW3N05f3yTkP3g&s",
+                imgAlt: "Green hills with trekking paths and natural scenery",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-22.html"
+            },
+            // Forts
+            {
+                category: "forts",
+                name: "Gandikota Fort",
+                description: "Gandikota is famous for being the 'Grand Canyon of India' due to its breathtaking gorge carved by the Pennar River, and for its historical Gandikota Fort, a 13th-century fortress with stunning red sandstone structures like the Madhavaraya Temple and Jamia Masjid. The site combines impressive geological formations with significant architectural and historical value from various dynasties, including the Vijayanagara Kingdom.",
+                img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/4a/20/f2/grand-canyon-of-india.jpg?w=1200&h=-1&s=1",
+                imgAlt: "Ancient stone fort on a hill with historical architecture",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-23.html"
+            },
+            {
+                category: "forts",
+                name: "Siddavatam Fort",
+                description: "The fort built here attracts many tourists. This popular fort was taken under control by Archaeological Survey of India in 1956. Not only fort, this place is also famous for many temples. Among these are Ranganatha Swamy temple, Jyoti Siddavateswara Swamy temple, Panchalingala and others.",
+                img: "https://www.indiadivine.org/wp-content/uploads/2018/10/Siddhavatam-1.jpg",
+                imgAlt: "Historic hill fort with stone walls and strategic location",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-24.html"
+            },
+             
+            // Waterfalls
+            {
+                category: "waterfalls",
+                name: "Pala Kondalu Waterfalls",
+                description: "Palakondalu refers to the beautiful, verdant Palakonda hill range located near Kadapa, famous for its Palkonda Waterfalls and the Palakondaraya Swamy temple. The area offers picturesque views with natural foliage and spectacular waterfalls that create small springs and ponds. It is a popular destination for nature lovers and tourists seeking a memorable picnic experience in a natural setting within the YSR Kadapa District. ",
+                img:"https://hblimg.mmtcdn.com/content/hubble/img/kadapatiowimages/mmt/activities/m_Palkonda_Waterfall_1_l_359_632.jpg?im=Resize=(412,347.56)",
+                imgAlt: "Majestic waterfall cascading down rocky cliffs into a misty pool",
+                moreInfo: "/home/pravalika/Desktop/kadapa/k-25.html"
+            },
+              
+            
+          ];
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const searchInput = document.getElementById('search-input');
+        const destinationsGrid = document.getElementById('destinations-grid');
+        let selectedCategories = new Set(['all']);
+        let searchTerm = '';
+
+        function updateDestinations() {
+            destinationsGrid.innerHTML = '';
+            
+            const filtered = destinations.filter(dest => {
+                const categoryMatch = selectedCategories.has('all') || selectedCategories.has(dest.category);
+                const searchMatch = searchTerm === '' || 
+                                  dest.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                  dest.description.toLowerCase().includes(searchTerm.toLowerCase());
+                return categoryMatch && searchMatch;
+            });
+            
+            if (filtered.length === 0) {
+                destinationsGrid.innerHTML = '<p class="text-center col-span-full text-gray-500 py-8">No destinations found matching your criteria.</p>';
+                return;
+            }
+            
+            filtered.forEach(dest => {
+                const card = document.createElement('div');
+                card.className = 'card bg-white rounded-lg shadow-md overflow-hidden';
+                card.innerHTML = `
+                    <div class="card-image">
+                        <img src="${dest.img}" alt="${dest.imgAlt}" class="w-full h-48 object-cover" loading="lazy" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold mb-2 capitalize">${dest.name}</h3>
+                        <p class="text-gray-600 mb-2">${dest.description}</p>
+                        <a href="${dest.moreInfo}" target="_blank" rel="noopener noreferrer" class="more-info">More Info</a>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full capitalize ml-2">${dest.category}</span>
+                    </div>
+                `;
+                destinationsGrid.appendChild(card);
+            });
+        }
+
+        // Category button event listeners
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+                
+                if (category === 'all') {
+                    selectedCategories.clear();
+                    selectedCategories.add('all');
+                    categoryButtons.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                } else {
+                    selectedCategories.delete('all');
+                    if (selectedCategories.has(category)) {
+                        selectedCategories.delete(category);
+                        btn.classList.remove('selected');
+                        
+                        // If no categories selected, show all
+                        if (selectedCategories.size === 0) {
+                            selectedCategories.add('all');
+                            document.querySelector('[data-category="all"]').classList.add('selected');
+                        }
+                    } else {
+                        selectedCategories.add(category);
+                        btn.classList.add('selected');
+                    }
+                }
+                
+                updateDestinations();
+            });
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            updateDestinations();
+        });
+
+        // Initialize with all destinations
+        document.querySelector('[data-category="all"]').classList.add('selected');
+        updateDestinations();
+    </script>
+</body>
+</html>
