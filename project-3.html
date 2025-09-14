@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Travel Destination Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .category-btn {
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .category-btn.selected {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        a.more-info {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: underline;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        a.more-info:hover {
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <header class="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-8">
+        <div class="container mx-auto text-center px-4">
+            <h1 class="text-4xl font-bold mb-2">Explore Travel Destinations</h1>
+            <p class="text-lg max-w-3xl mx-auto">
+                Discover amazing temples, tourist spots, beaches, caves, forts, and waterfalls
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <div>
+                <h2 class="text-2xl font-semibold mb-4">Choose Your Interests</h2>
+                <div class="flex flex-wrap gap-2">
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="all">All</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="temples">Temples</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="tourist-places">Tourist Places</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="forts">Forts</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="waterfalls">Waterfalls</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="beaches">Beaches</button>
+                    <button class="category-btn bg-white shadow-md px-4 py-2 rounded-lg text-gray-700 font-medium" data-category="caves">Caves</button>
+                </div>
+            </div>
+            <div class="w-full md:w-64">
+                <input type="text" id="search-input" placeholder="Search destinations..." class="search-input w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500" />
+            </div>
+        </section>
+
+        <section class="destinations">
+            <div id="destinations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Travel Destination Explorer. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const destinations = [
+            // Temples
+            {
+                category: "Temples",
+                name: "Sri Rama Temple",
+                description: "The Sri Rama temple in Pedda Thumbalam, a village in the Kurnool district of Andhra Pradesh, is a historic, 12th-century structure listed as a state archaeological monument. Believed to have been constructed by the Chalukyas or possibly even earlier, possibly around 1107 AD, it features intricate sculpture and is renowned for its unique star-shaped design.",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTEwk8pdm9_XraTSXjH7OdHW--xHIEP9yuqg&s",
+                imgAlt: "Golden temple structure with intricate carvings and tall gopuram against blue sky",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-1.html"
+            },
+            {
+                category: "Temples",
+                name: "Devaragattu Temple",
+                description: "The Devaragattu Temple, also known as the Sri Mala Malleswara Swami Kshetram, is located in the Devaragattu forests of Holagunda mandal, Kurnool district, Andhra Pradesh, near Adoni. The temple is famous for the annual Banni festival, a unique ritual known as 'Karrala Samaram' or stick fighting, which commemorates the victory of Lord Shiva over demons",
+                img: "https://www.sakshi.com/styles/webp/s3/article_images/2021/10/15/Devaragattu-Bunny-Festival.jpg.webp?itok=wJ8dZF9E",
+                imgAlt: "Colorful Hindu temple with detailed sculptures and decorative elements",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-2.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Lakshmi Narasimha Swamy Temple",
+                description: "Ahobilam's primary speciality is being home to the Nava Narasimha Temples, the only place in India dedicated to all nine forms of Lord Narasimha. Located in the scenic Nallamala Hills of Andhra Pradesh, it is a significant pilgrimage site where Lord Vishnu incarnated as the lion-headed deity. The entire complex, encompassing both Lower and Upper Ahobilam, is considered a sacred site where deities are worshipped in various aspects of Lord Narasimha.",
+                img: "https://cdn.talesofbackpacker.com/wp-content/uploads/2024/07/ahobilam.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-3.html"
+            },
+                        {
+                category: "Temples",
+                name: "Sri Yaganti Uma Maheshwara Temple",
+                description: "The Yaganti Temple in Andhra Pradesh is renowned for its mysterious Nandi idol, which appears to grow in size. According to the Archaeological Survey of India, the rock expands about one inch every 20 years due to mineral reactions with moisture.",
+                img: "https://temple.yatradham.org/public/Product/temple/temple_wf0Om7yS_202506081258280.png",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-4.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Bugga Ramalingeshwara Swamy Temple",
+                description: "The Ramalingeshwara Swamy Temple is dedicated to Lord Shiva. This temple has more than 500 years of history. There is an underground stream which originates beneath the shiva linga of the temple and flows continuously throughout the year. The water collected into a pond near the temple.",
+                img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/9a/e6/b8/bugga-ramalingeswara.jpg?w=1200&h=-1&s=1",
+                imgAlt: "Ancient stone temple with intricate carvings",
+                moreInfo:"/home/pravalika/Desktop/kadapa/ku-5.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Narasimha Veeranna Temple",
+                description: "This temple is a significant spiritual hub, dedicated to both Lord Shiva and Lord Vishnu, attracting devotees from far and wide. The temple is unique since it has no roof.",
+                img: "https://content3.jdmagicbox.com/comp/kurnool/s1/9999p8518.8518.090616121552.i1s1/catalogue/sri-narasimha-veeranna-swamy-temple-urukunda-kurnool-temples-hrujnhu0ha.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-6.html"
+            },
+            {
+                category: "Temples",
+                name: " Sri Raghavendra Swamy Temple",
+                description: "The Mantralayam temple is special because it houses the Brindavan (tomb/mausoleum) of the revered saint Sri Raghavendra Swamy, who is believed to remain alive and continue to offer blessings and perform miracles from his resting place. Devotees believe his eternal presence continues to provide spiritual solace, heal the sick, and fulfill their prayers.",
+                img: "https://content3.jdmagicbox.com/comp/kurnool/z6/9999p8518.8518.120522124911.p1z6/catalogue/sri-raghavendra-swamy-mutt-mantralayam-kurnool-temples-e2s8b9sc5o.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-7.html"
+            },
+            {
+                category: "Temples",
+                name: "Panchamukhi Temple",
+                description: "The Panchamukhi Temple, a temple dedicated to the five-faced Anjaneya (Hanuman), is located in Panchamukhi, a revered pilgrimage site in Karnataka, about 20 km from Mantralayam. This ancient, self-manifested stone sculpture of Hanuman is situated on a hillock and is a significant location where the saint Raghavendra Swamy meditated for 12 years. Devotees visit for its spiritual significance and the unique five-faced form of Hanuman, though opinions vary on the road conditions and overall cleanliness of the area.",
+                img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/d6/2a/dd/panchamuhi-anjaneya-temple.jpg?w=1200&h=-1&s=1",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-8.html"
+            },
+            {
+                category: "Temples",
+                name: " Sakshi Ganapati Temple",
+                description: "The Sakshi Ganapati Temple is a significant shrine located on the path to the Srisailam Mallikarjuna Swamy Temple in Andhra Pradesh, India. Named for its belief as a witness, Lord Ganesha here is believed to record the names of pilgrims visiting Lord Shiva in Srisailam, making the visit incomplete without his acknowledgment. The black stone idol of Ganesha is depicted holding a book and a pen, symbolically noting the devotee's presence for Lord Shiva.",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwNt9igWepJEEjTO9h8S6iRIin1tW9jRAJKQ&s",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-9.html"
+            },
+            {
+                category: "Temples",
+                name:"Venu Gopala Swamy Temple",
+                description: "The Venugopala Swamy Temple is a 12th-century Hoysala-era temple originally located in the village of Kannambadi, near Mysore, Karnataka. Construction of the Krishna Raja Sagara (KRS) Dam in the early 20th century submerged the village and the temple for over 70 years. In 2003, the Khoday Foundation undertook a project to relocate and restore the temple in Hosa Kannambadi, which was completed in 2011. The relocated temple now stands as a resurrected architectural marvel near the KRS Dam.",
+                img: "https://www.connectingtraveller.com/images/localtip/1630791175images%20(24).jpeg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-10.html"
+            },
+
+            
+            {
+                category: "Temples",
+                name: "Mahanandi Temple",
+                description: "A beautiful temple dedicated to Lord shiva, known for its spiritual atmosphere.",
+                img: "https://www.indiadivine.org/wp-content/uploads/2019/06/Mahanandi-18.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-11.html"
+            },
+            {
+                category: "Temples",
+                name: "Sri Bhramaramba Mallikarjuna Devasthanam",
+                description: "It is significant to the Hindu sects of both Shaivism and Shaktism as this temple is referred to as one of the twelve Jyotirlingas of Shiva and as one of the fifty two Shakti pithas, centres of the Hindu goddess. Shiva is worshiped as Mallikarjuna and is represented by the lingam.",
+                img: "https://www.srisailadevasthanam.org/static/media/SD-gallery-04.63cfb6ad.png",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-12.html"
+            },
+            {
+                category: "Temples",
+                name: " Hatakeshwar Swamy Temple",
+                description: "The temple was built sometime between the years 11th and 13th. It also plays an essential role in history. It is the spot from which the famous philosopher and saint Sri Sankaracharya wrote one of his main works. According to the temple story, a potter was a big devotee of Lord Shiva.",
+                img: "https://tirupatitirumalainfo.com/wp-content/uploads/2019/01/Hatakeswaram.jpg",
+                imgAlt: "Ancient stone temple with intricate carvings and spiritual ambiance",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-13.html"
+            },
+            
+            
+            // Tourist Places
+            {
+                category: "tourist-places",
+                name: "Shivaji Maharaj Temple",
+                description: "built in memory of shivaji, maratha king who visited srisailam in 1677 AD, he built the northern tower of the srisailam temple, its also said goddess appeared before him and bestowed him a sword to fight the evil, whereas another story goes as tuljapur bhavani gifted him the sword..",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQytJvWATuy_HpqfRLOafwLYiz1lXu6-g6u7w&s",
+                imgAlt: "Scenic hill station with green mountains and misty valleys",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-14.html"
+            },
+            {
+                category: "tourist-places",
+                name: "Pathalaganga",
+                description: "Pathala Ganga is a sacred spot on the backwaters of the River Krishna in Srisailam, Andhra Pradesh, where religious people can take a holy dip to wash away sins, as the waters are believed to be medicinal and holy. Visitors can reach the holy site by descending a steep flight of steps or by taking a thrilling ropeway ride down to the river. The area also offers boating, and is a picturesque location known for its scenic views.",
+                img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/d4/37/36/images-2-largejpg.jpg?w=500&h=500&s=1",
+                imgAlt: "Green hills with trekking paths and natural scenery",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-15.html"
+            },
+            {
+                category: "tourist-places",
+                name: "Nagarjuna Sagar Dam",
+                description: "The dam in Srisailam is the Srisailam Dam, a significant hydroelectric project constructed across the Krishna River on the border of Andhra Pradesh and Telangana. It is one of India's largest dams, built between 1960 and 1981, and plays a vital role in providing power, irrigation, and drinking water for parts of the surrounding states.",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7aw7hlI2GbOHq4wwz5Oqv6-wR08D6OY_IJw&s",
+                imgAlt: "Green hills with trekking paths and natural scenery",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-16.html"
+            },
+            {
+                category: "tourist-places",
+                name: "Nallamala Hills",
+                description: "A significant portion of the forest is the Nagarjunasagar-Srisailam Tiger Reserve, the largest in India, supporting a healthy tiger population and providing opportunities for jungle safaris. The region is also home to indigen.",
+                img: "https://i0.wp.com/www.tusktravel.com/blog/wp-content/uploads/2022/05/Nallamalla-Hills.jpg?fit=1080%2C810&ssl=1",
+                imgAlt: "Green hills with trekking paths and natural scenery",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-17.html"
+            },
+            {
+                category: "tourist-places",
+                name: "Sri Chenchu Lakshmi Tribal Museum",
+                description: " Chenchu Lakshmi Tribal Museum is the place for them to visit. This tribal museum is located near the entrance to Srisailam town. This museum presents a glimpse into the lives of various indigenous tribes who are residing in the Srisailam forests. This museum has been after Chenchu Lakshmi, consort of Narasimha Swamy. Statue of Chenchu Lakshmi can also be seen at the museum.",
+                img: "https://hblimg.mmtcdn.com/content/hubble/img/srisailam/mmt/activities/m_Chenchu%20Lakshmi%20Tribal%20Museum-5_l_396_527.jpg?im=Resize=(412,347.56)",
+                imgAlt: "Green hills with trekking paths and natural scenery",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-18.html.html"
+            },
+            // Forts
+            {
+                category: "forts",
+                name: "Konda Reddy Fort",
+                description: "Konda Reddy Buruju is located in the heart of Kurnool & believed to be built by the Raja's of Vijayanagaram. It was a part of Kurnool fort & was used as a prison. One revolutionary Konda Reddy attained martyrdom in this prison. Since then the place is known as KondaReddy Buruju.",
+                img: "https://indiacinehub.gov.in/sites/default/files/styles/flexslider_full/public/2024-01/kondareddy_buruju_kurnool_kurnool_district_andhra_pradesh.jpg?itok=gjEds1R_",
+                imgAlt: "Ancient stone fort on a hill with historical architecture",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-19.html"
+            },
+            {
+                category: "tourist-places",
+                name: "Orvakal Rock Garden",
+                description: "Orvakal Rock Garden is a ~1000-acre park near Kurnool, Andhra Pradesh, featuring natural, ancient silicate and quartz rock formations sculpted by erosion and a central lake.",
+                img: "https://s7ap1.scene7.com/is/image/incredibleindia/orvakallu-rock-garden-kurnool-andhra-pradesh-1-attr-hero?qlt=82&ts=1726744002257",
+                imgAlt: "Historic hill fort with stone walls and strategic location",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-20.html"
+            },
+                        {
+                category: "tourist-places",
+                name: "Shikhar Darshan",
+                description: "Shikhar Darshan in Srisailam refers to viewing the peak of Srisaila Sikharam, the tallest hill in the Srisailam hills, which is located 8 kilometers from the Mallikarjuna Swamy temple. According to ancient texts like the Padma Puranam, seeing this peak can cleanse one of all sins. The peak is also known as Sikhareswaram and is accessible by ascending the hill, with a palanquin service available for senior citizens.",
+                img: "https://tirupatitirumalainfo.com/wp-content/uploads/2019/01/Sikareswaram.jpg",
+                imgAlt: "Historic hill fort with stone walls and strategic location",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-21.html"
+            },
+             {
+                category: "caves",
+                name: "Akka Mahadevi Caves",
+                description: "The caves feature a striking natural arch at the entrance and a Shivalinga within, surrounded by the Nallamala Hills and accessible via a scenic boat ride on the Krishna River. Visitors should expect a rugged environment, requiring a torch for the dark interior and a nose cover for the dust.",
+                img: "https://media1.thrillophilia.com/filestore/n6g8n3u7ufanxsagbllwu8wye0lz_Akkamahadevi_20caves1.jpg?w=400&dpr=2",
+                imgAlt: "Historic hill fort with stone walls and strategic location",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-22.html"
+            },
+             {
+                category: "caves",
+                name: "Belum caves",
+                description:"India's second largest natural cave system, featuring extensive passages,large chambers,and stunning limestone formations like stalacites.",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT30eiiPLB5luj2357AVS8H4XUXWVhy-L-VsA&s",
+                imgAlt: "Historic hill fort with stone walls and strategic location",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-23.html"
+            },
+
+            // Waterfalls
+            {
+                category: "waterfalls",
+                name: "Paladara-Panchadara",
+                description: "Spectacular waterfall surrounded by lush rainforest.",
+                img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/71/cb/7e/20171124-094935-largejpg.jpg?w=900&h=500&s=1",
+                imgAlt: "Majestic waterfall cascading down rocky cliffs into a misty pool",
+                moreInfo: "/home/pravalika/Desktop/kadapa/ku-24.html"
+            },
+
+            
+          ];
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const searchInput = document.getElementById('search-input');
+        const destinationsGrid = document.getElementById('destinations-grid');
+        let selectedCategories = new Set(['all']);
+        let searchTerm = '';
+
+        function updateDestinations() {
+            destinationsGrid.innerHTML = '';
+            
+            const filtered = destinations.filter(dest => {
+                const categoryMatch = selectedCategories.has('all') || selectedCategories.has(dest.category);
+                const searchMatch = searchTerm === '' || 
+                                  dest.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                  dest.description.toLowerCase().includes(searchTerm.toLowerCase());
+                return categoryMatch && searchMatch;
+            });
+            
+            if (filtered.length === 0) {
+                destinationsGrid.innerHTML = '<p class="text-center col-span-full text-gray-500 py-8">No destinations found matching your criteria.</p>';
+                return;
+            }
+            
+            filtered.forEach(dest => {
+                const card = document.createElement('div');
+                card.className = 'card bg-white rounded-lg shadow-md overflow-hidden';
+                card.innerHTML = `
+                    <div class="card-image">
+                        <img src="${dest.img}" alt="${dest.imgAlt}" class="w-full h-48 object-cover" loading="lazy" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold mb-2 capitalize">${dest.name}</h3>
+                        <p class="text-gray-600 mb-2">${dest.description}</p>
+                        <a href="${dest.moreInfo}" target="_blank" rel="noopener noreferrer" class="more-info">More Info</a>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full capitalize ml-2">${dest.category}</span>
+                    </div>
+                `;
+                destinationsGrid.appendChild(card);
+            });
+        }
+
+        // Category button event listeners
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+                
+                if (category === 'all') {
+                    selectedCategories.clear();
+                    selectedCategories.add('all');
+                    categoryButtons.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                } else {
+                    selectedCategories.delete('all');
+                    if (selectedCategories.has(category)) {
+                        selectedCategories.delete(category);
+                        btn.classList.remove('selected');
+                        
+                        // If no categories selected, show all
+                        if (selectedCategories.size === 0) {
+                            selectedCategories.add('all');
+                            document.querySelector('[data-category="all"]').classList.add('selected');
+                        }
+                    } else {
+                        selectedCategories.add(category);
+                        btn.classList.add('selected');
+                    }
+                }
+                
+                updateDestinations();
+            });
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            updateDestinations();
+        });
+
+        // Initialize with all destinations
+        document.querySelector('[data-category="all"]').classList.add('selected');
+        updateDestinations();
+    </script>
+</body>
+</html>
